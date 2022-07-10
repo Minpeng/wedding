@@ -1,5 +1,6 @@
 // pages/bless/index.js
 const app = getApp();
+const utils = require('../../utils/util')
 Page({
     /**
      * 页面的初始数据
@@ -11,7 +12,10 @@ Page({
       limit: 9,
       skip: 0,
       count: 0,
-      loading: false
+      loading: false,
+      userInfo: {},
+      hasUserInfo: false,
+      canIUseGetUserProfile: false,
     },
     bindgetuserinfo (e) {
       console.log(e.detail.userInfo);
@@ -23,9 +27,10 @@ Page({
         .then(async res => {
           console.log(res.result)
           const obj = {
-            nickName: e.detail.userInfo.nickName,
-            avatarUrl: e.detail.userInfo.avatarUrl,
-            openId: res.result.openid
+              nickName: e.detail.userInfo.nickName,
+              avatarUrl: e.detail.userInfo.avatarUrl,
+            openId: res.result.openid,
+              create_time: utils.formatTime()
           }
           // 查询数据库
           const status = await app.globalData.db.collection('bless').where({ openId: res.result.openid }).get()
@@ -46,7 +51,7 @@ Page({
               })
               .catch(err => {
                 console.log(err);
-                this.loading = false    
+                this.loading = false
               })
           } else {
             this.setData({
@@ -57,7 +62,7 @@ Page({
               icon: 'none',
               duration: 2000
             })
-            this.loading = false          
+            this.loading = false
           }
         })
         .catch(err => {
@@ -66,7 +71,7 @@ Page({
         })
     },
     async getBless () {
-      const mainInfo = await app.globalData.db.collection('bless')
+      const mainInfo = await app.globalData.db.collection('bless').orderBy('create_time','desc')
         .limit(this.data.limit)
         .skip(this.data.skip)
         .get()
@@ -103,7 +108,12 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: async function (options) {
-      await this.getBless()
+      await this.getBless();
+       if (wx.getUserProfile) {
+            this.setData({
+              canIUseGetUserProfile: false
+            })
+          }
     },
 
     /**
@@ -117,7 +127,7 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function() {
-      
+
     },
 
     /**
@@ -150,5 +160,28 @@ Page({
      */
     onShareAppMessage: function() {
       app.shareHandle();
-    }
+    },
+     getUserProfile(e) {
+
+        // 推荐使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认
+        // 开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
+        wx.getUserProfile({
+            desc: '获取昵称和头像', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
+            success: (res) => {
+                this.setData({
+                    userInfo: res.userInfo,
+                    hasUserInfo: true
+                })
+            }
+
+        });
+
+    },
+    getUserInfo(e) {
+        // 不推荐使用getUserInfo获取用户信息，预计自2021年4月13日起，getUserInfo将不再弹出弹窗，并直接返回匿名的用户个人信息
+        this.setData({
+            userInfo: e.detail.userInfo,
+            hasUserInfo: true
+        })
+    },
 })

@@ -16,13 +16,19 @@
     </view>
     <view wx:else>
         <view class="befirst">
-            <image src="https://wong-1251253615.cos.ap-shanghai.myqcloud.com/lovemail.gif" />
+            <image src="/images/loading.png" />
         </view>
     </view>
     <view class="send_msg">
         <view>
             <input placeholder="在这里输入您要说的话" value="{{inputValue}}" class="send_ipt" bindinput="bindKeyInput" />
+            <button 
+                wx:if="{{canIUseGetUserProfile}}" 
+                bindtap="getUserProfile"> 
+                发布
+            </button>
             <button
+                wx:else 
                 type="primary"
                 loading="{{loading}}"
                 class="send_btn"
