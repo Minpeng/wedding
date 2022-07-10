@@ -111,7 +111,7 @@ Page({
       await this.getBless();
        if (wx.getUserProfile) {
             this.setData({
-              canIUseGetUserProfile: false
+              canIUseGetUserProfile: true
             })
           }
     },

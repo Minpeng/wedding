@@ -93,7 +93,7 @@ Page({
         await this.getComment();
         if (wx.getUserProfile) {
             this.setData({
-              canIUseGetUserProfile: false
+              canIUseGetUserProfile: true
             })
           }
     },
