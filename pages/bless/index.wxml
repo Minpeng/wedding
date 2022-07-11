@@ -16,11 +16,10 @@
   <view class="btn_zone">
      <button 
         wx:if="{{canIUseGetUserProfile}}" 
-        bindtap="getUserProfile"> 
+        bindtap="getUserProfile"
         type="warn" 
         disabled="{{isBless}}" 
         loading="{{loading}}" 
-        open-type="getUserInfo"  
         bindgetuserinfo="bindgetuserinfo">{{ isBless ? '已祝福' : '送上祝福' }}</button>  
     <button wx:else type="warn" disabled="{{isBless}}" loading="{{loading}}" open-type="getUserInfo"  bindgetuserinfo="bindgetuserinfo">{{ isBless ? '已祝福' : '送上祝福' }}</button>  
   </view>
