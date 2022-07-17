@@ -27,7 +27,7 @@
                 <view>谨定于 {{mainInfo.date}}</view>
                 <view>农历 {{mainInfo.lunar}} 举办婚礼</view>
                 <view>席设: {{mainInfo.hotel}}</view>
-                <view>地址：{{mainInfo.address}}</view>
+                <view>地址: {{mainInfo.address}}</view>
                 <view>恭请您的光临</view>
             </view>
             <image class="we" src='/images/we.png'></image>
