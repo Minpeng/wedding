@@ -28,6 +28,7 @@
                 type="primary"
                 loading="{{loading}}"
                 class="send_btn"
+                bindgetuserinfo="bindgetuserinfo"
                 >
                 发布
             </button>
